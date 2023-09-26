@@ -15,11 +15,4 @@ public class ErrorHandler {
         String stringError = String.format("Ошибка валидации: %s", e.getMessage());
         return new ErrorResponse(stringError);
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleThrowable(final Throwable e) {
-        String stringError = String.format("Произошло исключение: %s", e.getMessage());
-        return new ErrorResponse(stringError);
-    }
 }
