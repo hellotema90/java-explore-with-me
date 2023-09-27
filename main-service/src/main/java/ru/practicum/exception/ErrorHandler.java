@@ -13,31 +13,32 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleNotFoundException(final NotFoundException e) {
-        return new ApiError(e, "404. Required object was not found", HttpStatus.NOT_FOUND.name());
+        return new ApiError(e, "Ошибка 404. Нужный объект не найден", HttpStatus.NOT_FOUND.name());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiError handleForbiddenException(final ForbiddenException e) {
-        return new ApiError(e, "403. Forbidden method.", HttpStatus.FORBIDDEN.name());
+        return new ApiError(e, "Ошибка 403. Для запрошенной операции условия не выполнены",
+                HttpStatus.FORBIDDEN.name());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(final ValidationException e) {
-        return new ApiError(e, "400. Incorrectly made request.", HttpStatus.BAD_REQUEST.name());
+        return new ApiError(e, "Ошибка 400. Неправильно составлен запрос", HttpStatus.BAD_REQUEST.name());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleConflictException(final ConflictException e) {
-        return new ApiError(e, "409. Integrity constraint has been violated.", HttpStatus.CONFLICT.name());
+        return new ApiError(e, "Ошибка 409. Название уже существует", HttpStatus.CONFLICT.name());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
-        return new ApiError(e, "409.Data Integrity Violation", HttpStatus.CONFLICT.name());
+        return new ApiError(e, "409. Название уже существует", HttpStatus.CONFLICT.name());
     }
 
     @ExceptionHandler
@@ -47,7 +48,7 @@ public class ErrorHandler {
         String strSubString = "default message";
         int index = strError.lastIndexOf(strSubString);
         String strMessage = index == 0 ? "" : strError.substring(index + strSubString.length());
-        strError = String.format("400. Method argument not valid: %s", strMessage.isBlank() ? strError : strMessage);
+        strError = String.format("Ошибка 400. Неправильно составлен запрос: %s", strMessage.isBlank() ? strError : strMessage);
         return new ApiError(e, strError, HttpStatus.BAD_REQUEST.name());
     }
 
@@ -58,7 +59,7 @@ public class ErrorHandler {
         String strSubString = "default message";
         int index = strError.lastIndexOf(strSubString);
         String strMessage = index == 0 ? "" : strError.substring(index + strSubString.length());
-        strError = String.format("400. %s", strMessage.isBlank() ? strError : strMessage);
+        strError = String.format("Ошибка 400. Неправильно составлен запрос %s", strMessage.isBlank() ? strError : strMessage);
         return new ApiError(e, strError, HttpStatus.BAD_REQUEST.name());
     }
 

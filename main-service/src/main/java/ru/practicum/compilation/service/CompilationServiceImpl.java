@@ -83,6 +83,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     @Transactional
     public void deleteCompilationById(Long compilationId) {
-        compilationRepository.delete(getCompilationById(compilationId));
+        getCompilationById(compilationId);
+        compilationRepository.deleteById(compilationId);
     }
 }
