@@ -35,9 +35,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto update(NewCategoryDto newCategoryDto, Long categoryId) {
         String name = newCategoryDto.getName();
-        if (categoryRepository.existsByName(name)) {
-            throw new ConflictException(String.format("Категория с именем: %s уже существует", name));
-        }
         Category category = getCategoryById(categoryId);
         category.setName(name);
         return CategoryMapper.toCategoryDto(categoryRepository.save(category));
