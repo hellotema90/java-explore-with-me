@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
         User author = getUserById(authorId);
         Event event = getEventById(eventId);
         if (!event.getState().equals(EventState.PUBLISHED)) {
-            throw new ForbiddenException("Можно создавать комментарии только к опубликованным событиям");
+            throw new ForbiddenException("Можно создавать комментарии только к опубликованным событиям.");
         }
         Comment comment = CommentMapper.toComment(newCommentDto, author, event);
         return CommentMapper.toCommentDto(commentRepository.save(comment));
