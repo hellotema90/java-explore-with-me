@@ -43,10 +43,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto updateCommentPrivate(UpdateCommentDto updateComment, Long commentId, Long authorId) {
-        if (!commentRepository.existsByIdAndAuthorId(commentId, authorId)) {
-            throw new ForbiddenException(String.format("Комментария с  id:%d и автора с id:%d не существует",
-                    commentId, authorId));
-        }
+        existsCommentByIdAndAuthorId(commentId, authorId);
         Comment comment = getCommentById(commentId);
         CommentStatus commentStatus = getCommentStatus(updateComment.getStatusAction());
         if (commentStatus != null) {
@@ -73,7 +70,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteCommentPrivate(Long commentId, Long authorId) {
-        commentRepository.delete(getCommentByIdAndAuthorId(commentId, authorId));
+        existsCommentByIdAndAuthorId(commentId, authorId);
+        commentRepository.deleteById(commentId);
     }
 
     @Override
@@ -132,12 +130,6 @@ public class CommentServiceImpl implements CommentService {
             throw new NotFoundException(String.format("Комментарий с id:%d и автор с id:%s не существуют",
                     commentId, authorId));
         }
-    }
-
-    private Comment getCommentByIdAndAuthorId(Long commentId, Long authorId) {
-        return commentRepository.findAllByIdAndAuthorId(commentId, authorId).orElseThrow(()
-                -> new NotFoundException(String.format("Комментарий с id:%d и автор с id:%s не существуют",
-                commentId, authorId)));
     }
 
     private CommentStatus getCommentStatus(CommentStatusAction statusAction) {
