@@ -27,10 +27,11 @@ public class UserServiceImpl implements UserService {
     public UserDto create(NewUserRequest newUserRequest) {
         User user = UserMapper.newUserRequestToUser(newUserRequest);
         try {
-            log.info("Create user {} ", newUserRequest);
+            log.info("Создание пользователя {} ", newUserRequest);
             return UserMapper.toUserDto(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException(String.format("User with E-mail: %s or name %s already  exist",
+            throw new DataIntegrityViolationException(
+                    String.format("Пользователь с E-mail: %s или именем %s уже существует",
                     newUserRequest.getEmail(), newUserRequest.getName()));
         }
     }
@@ -40,10 +41,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUser(List<Long> userIds, int from, int size) {
         Pageable pageable = PageRequest.of(from, size);
         if (userIds == null) {
-            log.info("Get all users");
+            log.info("Получение всех пользователей");
             return UserMapper.toListUserDto(userRepository.findAll(pageable).toList());
         } else {
-            log.info("Get users by ids: {}", userIds);
+            log.info("Получение пользователя по id: {}", userIds);
             return UserMapper.toListUserDto(userRepository.findByIdIn(userIds, pageable));
         }
     }
@@ -51,12 +52,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(Long id) {
-        log.info("Delete user with id:{} ", id);
+        log.info("Удаление пользователя по id:{} ", id);
         userRepository.delete(getUserById(id));
     }
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id: %s not exist!", userId)));
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Пользователь с id: %s не существует", userId)));
     }
 }
